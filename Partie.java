@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.lang.Math;
-import java.lang.Object;
 
 
 public class Partie{
