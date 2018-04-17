@@ -6,16 +6,17 @@ import  java.awt.event.*;
 
 
 public class Partie extends JFrame implements ActionListener{
-	private int[][] grille_bombe;
-	private int[][] grille_partie;
+	 int[][] grille_bombe;
+	 int[][] grille_partie;
 	private JButton[][] grille_bouton;
-	private int lignes;
-	private int colonnes;
+	 int lignes;
+	 int colonnes;
 	private int nbbombes;
 	private int numl;
 	private int numc;
 	private boolean loose=false;
 	private JFrame fenetre;
+	private int count=0;
 
 	public Partie(int l, int c, int b) {
 		grille_bombe = new int[l][c];
@@ -46,6 +47,11 @@ public class Partie extends JFrame implements ActionListener{
 			}
 		}
 	}
+
+public int getBomb(int l, int c)
+{
+	return grille_bombe[l][c];
+}
 	
 /*
 place les bombes dans la grille_bombe
@@ -174,24 +180,9 @@ place les bombes dans la grille_bombe
 		fenetre.setVisible(true);
 	}
 			
-	void Changement(int l, int c)
+	void ChangeVal	(int l, int c)
 	{
 		grille_partie[l][c]=1;
-		if (grille_bombe[l][c] == 0) 
-		{
-			for (int i=-1; i<2; i++) 
-			{
-				if((i+l)>=0 && (i+l)<lignes)
-				{
-					for (int k=-1; k<2; k++) 
-					{
-						if ((k+c)>=0 && (k+c)<colonnes) {
-							this.Changement(i+l,k+c);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -201,9 +192,10 @@ place les bombes dans la grille_bombe
 			for (int k=0; k<colonnes; k++) 
 			{
 				int x=Integer.parseInt(e.getActionCommand());
-				if(x==(i*10+k))
+				if(x==(i*10+k) && grille_partie[i][k]==0)
 				{
-    				this.Changement(i,k);
+					Changement s = new Changement();
+					s.Changements(i,k,this);
     				this.Update();
 				}
 			}
