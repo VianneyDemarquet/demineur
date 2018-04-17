@@ -12,11 +12,10 @@ public class Partie extends JFrame implements ActionListener{
 	private int lignes;
 	private int colonnes;
 	private int nbbombes;
-	private int numl;
-	private int numc;
+	private boolean win= false;
 	private boolean loose=false;
+	private int case_libre;
 	private JFrame fenetre;
-	private int count=0;
 
 	public Partie(int l, int c, int b) {
 		grille_bombe = new int[l][c];
@@ -25,6 +24,7 @@ public class Partie extends JFrame implements ActionListener{
 		lignes=l;
 		colonnes=c;
 		nbbombes=b;
+		case_libre=(l*c)-b;
 		this.Zéro();
 		this.Place_Bomb();
 
@@ -113,6 +113,7 @@ place les bombes dans la grille_bombe
 	void Afficher_consol(){
 		System.out.println("nbcolonnes : "+colonnes);
 		System.out.println("nblignes : "+lignes);
+		System.out.println("case libre : "+case_libre);
 		for (int i=0; i<lignes;i++) {
 			for (int k=0;k<colonnes ;k++ ) {
 				System.out.print(grille_bombe[i][k]+" ");
@@ -137,20 +138,11 @@ place les bombes dans la grille_bombe
 		{
 			for (int k = 0 ;k < colonnes ;k++ ) 
 			{
-				if (grille_bombe[i][k] == 9) 
-				{	
-					grille_bouton[i][k] = new JButton(("b"));
-					grille_bouton[i][k].addActionListener(this);
-					fenetre.add(grille_bouton[i][k]);
-				}else 
-				{
-					grille_bouton[i][k] = new JButton(""+i+k);
-					grille_bouton[i][k].setForeground(gray);
-					grille_bouton[i][k].setBackground(gray);
-					grille_bouton[i][k].addActionListener(this);
-					fenetre.add(grille_bouton[i][k]);
-				}
-				
+				grille_bouton[i][k] = new JButton(""+i+k);
+				grille_bouton[i][k].setForeground(gray);
+				grille_bouton[i][k].setBackground(gray);
+				grille_bouton[i][k].addActionListener(this);
+				fenetre.add(grille_bouton[i][k]);				
 			}
 		}
 		fenetre.setVisible(true);
@@ -161,6 +153,7 @@ place les bombes dans la grille_bombe
 		fenetre.setLayout(gestionnaire);
 		Color gray = new Color(230, 230, 230);
 		Color white = new Color(255, 255, 255);
+		Color red = new Color(255, 0, 0);
 		for(int i = 0; i < (lignes); i++)
 		{
 			for (int k = 0 ;k < colonnes ;k++ ) 
@@ -183,21 +176,52 @@ place les bombes dans la grille_bombe
 					grille_bouton[i][k] = new JButton(""+grille_bombe[i][k]);
 					grille_bouton[i][k].setBackground(white);
 					fenetre.add(grille_bouton[i][k]);
+				}else if(grille_partie[i][k] == 4)
+				{
+					grille_bouton[i][k] = new JButton("b");
+					grille_bouton[i][k].setBackground(red);
+					fenetre.add(grille_bouton[i][k]);
 				}else
 				{
-					loose = true;
 					grille_bouton[i][k] = new JButton("b");
+					grille_bouton[i][k].setBackground(white);
 					fenetre.add(grille_bouton[i][k]);
 				}
-				
 			}
 		}
 		fenetre.setVisible(true);
 	}
 			
-	void ChangeVal	(int l, int c)
+	void ChangeVal(int l, int c)
 	{
 		grille_partie[l][c]=1;
+	}
+
+	void Cont(int l, int c)
+	{
+		if (grille_bombe[l][c]==9) {
+			loose = true;
+			grille_partie[l][c]=4;
+			Perdu();
+		}else
+		{
+			case_libre--;
+			if (case_libre == 0) {
+				win = true;
+			}
+		}
+		
+	}
+
+	void Perdu()
+	{
+		for (int i=0; i<lignes; i++) {
+			for (int k=0; k<colonnes; k++) {
+				if (grille_partie[i][k]!=4 && grille_bombe[i][k]==9) {
+					grille_partie[i][k]=1;
+				}
+			}
+		}
 	}
 
 	public void actionPerformed(ActionEvent e)
