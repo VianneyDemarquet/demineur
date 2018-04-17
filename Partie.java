@@ -6,11 +6,11 @@ import  java.awt.event.*;
 
 
 public class Partie extends JFrame implements ActionListener{
-	 int[][] grille_bombe;
-	 int[][] grille_partie;
+	private int[][] grille_bombe;
+	private int[][] grille_partie;
 	private JButton[][] grille_bouton;
-	 int lignes;
-	 int colonnes;
+	private int lignes;
+	private int colonnes;
 	private int nbbombes;
 	private int numl;
 	private int numc;
@@ -51,6 +51,21 @@ public class Partie extends JFrame implements ActionListener{
 public int getBomb(int l, int c)
 {
 	return grille_bombe[l][c];
+}
+
+public int getLignes()
+{
+	return lignes;
+}
+
+public int getColonnes()
+{
+	return colonnes;
+}
+
+public int getPartie(int l, int c)
+{
+	return grille_partie[l][c];
 }
 	
 /*
