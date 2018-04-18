@@ -5,7 +5,7 @@ import java.lang.Object;
 import  java.awt.event.*;
 
 
-public class Partie extends JFrame implements ActionListener{
+public class Partie extends JFrame implements MouseListener{
 	private int[][] grille_bombe;
 	private int[][] grille_partie;
 	private JButton[][] grille_bouton;
@@ -16,6 +16,7 @@ public class Partie extends JFrame implements ActionListener{
 	private boolean loose=false;
 	private int case_libre;
 	private JFrame fenetre;
+	private int drapeaux;
 
 	public Partie(int l, int c, int b) {
 		grille_bombe = new int[l][c];
@@ -25,6 +26,7 @@ public class Partie extends JFrame implements ActionListener{
 		colonnes=c;
 		nbbombes=b;
 		case_libre=(l*c)-b;
+		drapeaux=0
 		this.Zéro();
 		this.Place_Bomb();
 
@@ -138,10 +140,11 @@ place les bombes dans la grille_bombe
 		{
 			for (int k = 0 ;k < colonnes ;k++ ) 
 			{
-				grille_bouton[i][k] = new JButton(""+i+k);
+				grille_bouton[i][k] = new JButton("");
+				grille_bouton[i][k].setName(""+i+k);
 				grille_bouton[i][k].setForeground(gray);
 				grille_bouton[i][k].setBackground(gray);
-				grille_bouton[i][k].addActionListener(this);
+				grille_bouton[i][k].addMouseListener(this);
 				fenetre.add(grille_bouton[i][k]);				
 			}
 		}
@@ -161,10 +164,11 @@ place les bombes dans la grille_bombe
 				fenetre.remove(grille_bouton[i][k]);
 				if (grille_partie[i][k] == 0) 
 				{
-					grille_bouton[i][k] = new JButton(""+i+k);
+					grille_bouton[i][k] = new JButton("");
+					grille_bouton[i][k].setName(""+i+k);
 					grille_bouton[i][k].setForeground(gray);
 					grille_bouton[i][k].setBackground(gray);
-					grille_bouton[i][k].addActionListener(this);
+					grille_bouton[i][k].addMouseListener(this);
 					fenetre.add(grille_bouton[i][k]);
 				}else if (grille_bombe[i][k] == 0) 
 				{
@@ -224,21 +228,56 @@ place les bombes dans la grille_bombe
 		}
 	}
 
-	public void actionPerformed(ActionEvent e)
+	void Drapeau(int l, int c)
 	{
+		if (grille_partie[l][c]==0) {
+			grille_partie[l][c]++;
+			drapeaux++;
+		}else if (grille_partie[l][c]==1) {
+			grille_partie[l][c]++;
+			drapeaux--;
+		}else
+		{
+			grille_partie[l][c]=0;
+		}
+	}
+
+	public void mouseClicked(MouseEvent e){
+	}			// un bouton cliqué
+
+	public void mouseEntered(MouseEvent e){
+	}			// debut du survol
+
+	public void mouseExited(MouseEvent e){
+	}			// fin du survol
+
+	public void mousePressed(MouseEvent e){
+	}			// un bouton appuyé
+
+	public void mouseReleased(MouseEvent e)
+	{
+		int x=Integer.parseInt(e.getComponent().getName());
+
 		for (int i=0; i<lignes; i++) 
 		{
 			for (int k=0; k<colonnes; k++) 
 			{
-				int x=Integer.parseInt(e.getActionCommand());
 				if(x==(i*10+k) && grille_partie[i][k]==0)
 				{
-					Changement s = new Changement();
-					s.Changements(i,k,this);
-    				this.Update();
+					if(e.getButton() == MouseEvent.BUTTON1)	//Clic Gauche
+					{								
+						Changement s = new Changement();
+						s.Changements(i,k,this);
+					}
+					else	//Clic droit
+					{
+						this.Drapeau(i,k);
+					}
+					this.Update();					
 				}
 			}
 		}
-      
-	}
-}
+
+		
+	}		// un bouton est relaché
+}	
