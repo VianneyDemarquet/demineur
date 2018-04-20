@@ -3,6 +3,7 @@ import java.awt.*;
 import java.lang.Math;
 import java.lang.Object;
 import  java.awt.event.*;
+import java.io.*;
 
 
 public class Partie extends JFrame implements MouseListener{
@@ -26,7 +27,7 @@ public class Partie extends JFrame implements MouseListener{
 		colonnes=c;
 		nbbombes=b;
 		case_libre=(l*c)-b;
-		drapeaux=0
+		drapeaux=0;
 		this.Zéro();
 		this.Place_Bomb();
 
@@ -116,12 +117,7 @@ place les bombes dans la grille_bombe
 		System.out.println("nbcolonnes : "+colonnes);
 		System.out.println("nblignes : "+lignes);
 		System.out.println("case libre : "+case_libre);
-		for (int i=0; i<lignes;i++) {
-			for (int k=0;k<colonnes ;k++ ) {
-				System.out.print(grille_bombe[i][k]+" ");
-			}
-			System.out.println("");
-		}
+		
 		System.out.println("");
 		for (int i=0; i<lignes;i++) {
 			for (int k=0;k<colonnes ;k++ ) {
@@ -141,8 +137,7 @@ place les bombes dans la grille_bombe
 			for (int k = 0 ;k < colonnes ;k++ ) 
 			{
 				grille_bouton[i][k] = new JButton("");
-				grille_bouton[i][k].setName(""+i+k);
-				grille_bouton[i][k].setForeground(gray);
+				grille_bouton[i][k].setName(""+(i*10)+k);
 				grille_bouton[i][k].setBackground(gray);
 				grille_bouton[i][k].addMouseListener(this);
 				fenetre.add(grille_bouton[i][k]);				
@@ -165,34 +160,57 @@ place les bombes dans la grille_bombe
 				if (grille_partie[i][k] == 0) 
 				{
 					grille_bouton[i][k] = new JButton("");
-					grille_bouton[i][k].setName(""+i+k);
-					grille_bouton[i][k].setForeground(gray);
+					grille_bouton[i][k].setName(""+(i*10)+k);
 					grille_bouton[i][k].setBackground(gray);
-					grille_bouton[i][k].addMouseListener(this);
-					fenetre.add(grille_bouton[i][k]);
+					if (!win && !loose) {
+						grille_bouton[i][k].addMouseListener(this);
+					}
+					
+				}else if(grille_partie[i][k]==2)
+				{
+					grille_bouton[i][k] = new JButton("");
+					grille_bouton[i][k].setName(""+(i*10)+k);
+					grille_bouton[i][k].setBackground(gray);
+					grille_bouton[i][k].setIcon(new ImageIcon("image/étoile.png"));
+
+					if (!win && !loose) {
+						grille_bouton[i][k].addMouseListener(this);
+					}
+				}else if(grille_partie[i][k]==3)
+				{
+					grille_bouton[i][k] = new JButton("");
+					grille_bouton[i][k].setName(""+(i*10)+k);
+					grille_bouton[i][k].setBackground(gray);
+					grille_bouton[i][k].setIcon(new ImageIcon("image/intero.png"));
+
+					if (!win && !loose) {
+						grille_bouton[i][k].addMouseListener(this);
+					}
 				}else if (grille_bombe[i][k] == 0) 
 				{
 					grille_bouton[i][k] = new JButton("");
 					grille_bouton[i][k].setBackground(white);
-					fenetre.add(grille_bouton[i][k]);	
+					
 				}else if (grille_bombe[i][k] != 9) 
 				{	
 					grille_bouton[i][k] = new JButton(""+grille_bombe[i][k]);
 					grille_bouton[i][k].setBackground(white);
-					fenetre.add(grille_bouton[i][k]);
+
 				}else if(grille_partie[i][k] == 4)
 				{
-					grille_bouton[i][k] = new JButton("b");
+					grille_bouton[i][k] = new JButton("");
 					grille_bouton[i][k].setBackground(red);
-					fenetre.add(grille_bouton[i][k]);
+					grille_bouton[i][k].setIcon(new ImageIcon("image/bomb.png"));
 				}else
 				{
-					grille_bouton[i][k] = new JButton("b");
+					grille_bouton[i][k] = new JButton("");
 					grille_bouton[i][k].setBackground(white);
-					fenetre.add(grille_bouton[i][k]);
+					grille_bouton[i][k].setIcon(new ImageIcon("image/bomb.png"));
 				}
+				fenetre.add(grille_bouton[i][k]);
 			}
 		}
+		
 		fenetre.setVisible(true);
 	}
 			
@@ -231,10 +249,10 @@ place les bombes dans la grille_bombe
 	void Drapeau(int l, int c)
 	{
 		if (grille_partie[l][c]==0) {
-			grille_partie[l][c]++;
+			grille_partie[l][c]=2;
 			drapeaux++;
-		}else if (grille_partie[l][c]==1) {
-			grille_partie[l][c]++;
+		}else if (grille_partie[l][c]==2) {
+			grille_partie[l][c]=3;
 			drapeaux--;
 		}else
 		{
@@ -262,8 +280,14 @@ place les bombes dans la grille_bombe
 		{
 			for (int k=0; k<colonnes; k++) 
 			{
-				if(x==(i*10+k) && grille_partie[i][k]==0)
+				int var1 = i*100+k;
+				int var2 = i*1000+k;
+				
+				if(x==var1 || x==var2)
 				{
+					System.out.println("x: "+x);
+					System.out.println("i*10: "+var1);
+					System.out.println("i*100: "+var2);
 					if(e.getButton() == MouseEvent.BUTTON1)	//Clic Gauche
 					{								
 						Changement s = new Changement();
