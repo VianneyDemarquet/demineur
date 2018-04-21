@@ -6,13 +6,13 @@ import  java.awt.event.*;
 import java.io.*;
 
 
-public class Partie extends JFrame implements MouseListener{
+public class Partie extends JFrame implements MouseListener, ActionListener{
 	private int[][] grille_bombe;
 	private int[][] grille_partie;
 	private JButton[][] grille_bouton;
 	private JButton panel;
 	private JButton sauvegarder;
-	private JButton quité;
+	private JButton quitté;
 	private int lignes;
 	private int colonnes;
 	private int nbbombes;
@@ -278,15 +278,18 @@ place les bombes dans la grille_bombe
 
 		panel = new JButton("Perdu");
 		sauvegarder = new JButton("Nouvelle partie");
-		quité = new JButton("Quité");
+		quitté = new JButton("Quitté");
 
 		panel.setBackground(red);
-		quité.setBackground(gray);
+		quitté.setBackground(gray);
 		sauvegarder.setBackground(gray);
+
+		quitté.addActionListener(this);
+		sauvegarder.addActionListener(this);
 
 		menu.add(panel);
 		menu.add(sauvegarder);
-		menu.add(quité);
+		menu.add(quitté);
 		menu.setVisible(true);
 	}
 
@@ -300,16 +303,19 @@ place les bombes dans la grille_bombe
 
 		panel = new JButton("Gagné");
 		sauvegarder = new JButton("Nouvelle partie");
-		quité = new JButton("Quité");
+		quitté = new JButton("Quitté");
 
 		Color vert = new Color(0,200,0);
 		panel.setBackground(vert);
-		quité.setBackground(gray);
+		quitté.setBackground(gray);
 		sauvegarder.setBackground(gray);
+
+		quitté.addActionListener(this);
+		sauvegarder.addActionListener(this);
 
 		menu.add(panel);
 		menu.add(sauvegarder);
-		menu.add(quité);
+		menu.add(quitté);
 
 		menu.setVisible(true);
 	}
@@ -341,15 +347,35 @@ place les bombes dans la grille_bombe
 		int mine_rest = nbbombes-drapeaux;
 
 		panel = new JButton("Mine \n restante : "+mine_rest);
-		sauvegarder = new JButton("sauvegarder et quité");
+		sauvegarder = new JButton("Sauvegarder et quitté");
 
 		panel.setBackground(gray);
 		sauvegarder.setBackground(gray);
 
+		sauvegarder.addActionListener(this);
+
 		menu.add(panel);
 		menu.add(sauvegarder);
-		
+
 		menu.setVisible(true);
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{
+		String chaine = e.getActionCommand();
+		if(chaine=="Sauvegarder et quitté")
+		{
+			System.out.println("Sauvegarder");
+
+		}else if(chaine=="Nouvelle partie")
+		{
+			System.out.println("Nouvelle partie");
+
+		}else if(chaine=="Quitté")
+		{
+			System.exit(0);
+		}
+		
 	}
 
 	public void mouseClicked(MouseEvent e){
