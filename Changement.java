@@ -5,7 +5,6 @@ public class Changement{
 	{
 		grille.ChangeVal(l,c);
 		grille.Cont(l,c);
-
 		if (grille.getBomb(l,c) == 0) 
 		{
 			for (int i=-1; i<2; i++) 

@@ -10,14 +10,22 @@ public class Partie extends JFrame implements MouseListener{
 	private int[][] grille_bombe;
 	private int[][] grille_partie;
 	private JButton[][] grille_bouton;
+	private JButton panel;
+	private JButton sauvegarder;
+	private JButton quité;
 	private int lignes;
 	private int colonnes;
 	private int nbbombes;
-	private boolean win= false;
-	private boolean loose=false;
+	private boolean win;
+	private boolean loose;
 	private int case_libre;
 	private JFrame fenetre;
 	private int drapeaux;
+	private boolean first;
+	private JFrame menu;
+	private Color gray;
+	private Color white;
+	private Color red;
 
 	public Partie(int l, int c, int b) {
 		grille_bombe = new int[l][c];
@@ -26,8 +34,6 @@ public class Partie extends JFrame implements MouseListener{
 		lignes=l;
 		colonnes=c;
 		nbbombes=b;
-		case_libre=(l*c)-b;
-		drapeaux=0;
 		this.Zéro();
 		this.Place_Bomb();
 
@@ -36,7 +42,27 @@ public class Partie extends JFrame implements MouseListener{
 		fenetre.setLocation(0, 0);
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.Afficher();
+		menu = new JFrame("Menu");
+		menu.setSize(200,500);
+		menu.setLocation(600,0);
+		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Init();
+		
+	}
+
+	private void Init()
+	{
+		case_libre=(lignes*colonnes)-nbbombes;
+		drapeaux=0;
+		win=false;
+		loose=false;
+		first=false;
+		gray = new Color(230, 230, 230);
+		white = new Color(255, 255, 255);
+		red = new Color(255, 0, 0);
+		this.Update();
+		this.Menu();
+		first=true;
 	}
 
 	/*
@@ -126,7 +152,7 @@ place les bombes dans la grille_bombe
 			System.out.println("");
 		}
 	}
-
+/*
 	void Afficher(){
 		this.Afficher_consol();
 		GridLayout gestionnaire = new GridLayout(lignes, colonnes);
@@ -145,18 +171,18 @@ place les bombes dans la grille_bombe
 		}
 		fenetre.setVisible(true);
 	}
-
+*/
 	void Update(){
 		GridLayout gestionnaire = new GridLayout(lignes, colonnes);
 		fenetre.setLayout(gestionnaire);
-		Color gray = new Color(230, 230, 230);
-		Color white = new Color(255, 255, 255);
-		Color red = new Color(255, 0, 0);
+		
 		for(int i = 0; i < (lignes); i++)
 		{
 			for (int k = 0 ;k < colonnes ;k++ ) 
 			{
-				fenetre.remove(grille_bouton[i][k]);
+				if (first==true) {
+					fenetre.remove(grille_bouton[i][k]);
+				}
 				if (grille_partie[i][k] == 0) 
 				{
 					grille_bouton[i][k] = new JButton("");
@@ -224,12 +250,13 @@ place les bombes dans la grille_bombe
 		if (grille_bombe[l][c]==9) {
 			loose = true;
 			grille_partie[l][c]=4;
-			Perdu();
+			this.Perdu();
 		}else
 		{
 			case_libre--;
 			if (case_libre == 0) {
 				win = true;
+				this.Gagné();
 			}
 		}
 		
@@ -244,6 +271,47 @@ place les bombes dans la grille_bombe
 				}
 			}
 		}
+		GridLayout gestionnaire = new GridLayout(3, 1);
+		menu.setLayout(gestionnaire);
+		menu.remove(panel);
+		menu.remove(sauvegarder);
+
+		panel = new JButton("Perdu");
+		sauvegarder = new JButton("Nouvelle partie");
+		quité = new JButton("Quité");
+
+		panel.setBackground(red);
+		quité.setBackground(gray);
+		sauvegarder.setBackground(gray);
+
+		menu.add(panel);
+		menu.add(sauvegarder);
+		menu.add(quité);
+		menu.setVisible(true);
+	}
+
+	void Gagné()
+	{
+		GridLayout gestionnaire = new GridLayout(3, 1);
+		menu.setLayout(gestionnaire);
+
+		menu.remove(panel);
+		menu.remove(sauvegarder);
+
+		panel = new JButton("Gagné");
+		sauvegarder = new JButton("Nouvelle partie");
+		quité = new JButton("Quité");
+
+		Color vert = new Color(0,200,0);
+		panel.setBackground(vert);
+		quité.setBackground(gray);
+		sauvegarder.setBackground(gray);
+
+		menu.add(panel);
+		menu.add(sauvegarder);
+		menu.add(quité);
+
+		menu.setVisible(true);
 	}
 
 	void Drapeau(int l, int c)
@@ -258,6 +326,30 @@ place les bombes dans la grille_bombe
 		{
 			grille_partie[l][c]=0;
 		}
+		this.Menu();
+	}
+
+	void Menu()
+	{
+		GridLayout gestionnaire = new GridLayout(2, 1);
+		menu.setLayout(gestionnaire);
+		if (first == true) 
+		{
+			menu.remove(panel);
+			menu.remove(sauvegarder);
+		}
+		int mine_rest = nbbombes-drapeaux;
+
+		panel = new JButton("Mine \n restante : "+mine_rest);
+		sauvegarder = new JButton("sauvegarder et quité");
+
+		panel.setBackground(gray);
+		sauvegarder.setBackground(gray);
+
+		menu.add(panel);
+		menu.add(sauvegarder);
+		
+		menu.setVisible(true);
 	}
 
 	public void mouseClicked(MouseEvent e){
@@ -285,9 +377,6 @@ place les bombes dans la grille_bombe
 				
 				if(x==var1 || x==var2)
 				{
-					System.out.println("x: "+x);
-					System.out.println("i*10: "+var1);
-					System.out.println("i*100: "+var2);
 					if(e.getButton() == MouseEvent.BUTTON1)	//Clic Gauche
 					{								
 						Changement s = new Changement();
