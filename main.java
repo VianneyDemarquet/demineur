@@ -3,11 +3,20 @@ import java.awt.*;
 
 public class main{
 	public static void main(String[] args) {
-		int x=Integer.parseInt(args[0]);//nombre ligne
-		int y=Integer.parseInt(args[1]);//nombre colonnes
-		int z=Integer.parseInt(args[2]);//nombre bombes
 
-		Partie grille = new Partie(x,y,z);
+		if (args.length<3) 
+		{
+			Partie grille = new Partie();
+
+		}else
+		{
+			int lignes=Integer.parseInt(args[0]);//nombre lignes
+			int colonnes=Integer.parseInt(args[1]);//nombre colonnes
+			int nbbombes=Integer.parseInt(args[2]);//nombre bombes
+
+			Partie grille = new Partie(lignes,colonnes,nbbombes);
+		}
+		
 		while(true)
 		{}
 	}

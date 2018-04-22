@@ -7,22 +7,27 @@ import java.io.*;
 
 
 public class Partie extends JFrame implements MouseListener, ActionListener{
+	
 	private int[][] grille_bombe;
 	private int[][] grille_partie;
+	private int lignes;
+	private int colonnes;
+	private int nbbombes;
+	private int case_libre;
+	private int drapeaux;
+
 	private JButton[][] grille_bouton;
 	private JButton panel;
 	private JButton sauvegarder;
 	private JButton quitté;
-	private int lignes;
-	private int colonnes;
-	private int nbbombes;
+
+	private boolean first;
 	private boolean win;
 	private boolean loose;
-	private int case_libre;
+	
 	private JFrame fenetre;
-	private int drapeaux;
-	private boolean first;
 	private JFrame menu;
+	
 	private Color gray;
 	private Color white;
 	private Color red;
@@ -30,13 +35,23 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	public Partie(int l, int c, int b) {
 		grille_bombe = new int[l][c];
 		grille_partie = new int[l][c];
-		grille_bouton = new JButton[l][c];
 		lignes=l;
 		colonnes=c;
 		nbbombes=b;
 		this.Zéro();
 		this.Place_Bomb();
+		this.Init();
+		
+	}
 
+	public Partie()
+	{
+		new Save(this);
+		this.Init();
+	}
+
+	private void Init()
+	{
 		fenetre = new JFrame("Démineur");
 		fenetre.setSize(500, 500);
 		fenetre.setLocation(0, 0);
@@ -46,12 +61,8 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		menu.setSize(200,500);
 		menu.setLocation(600,0);
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Init();
-		
-	}
 
-	private void Init()
-	{
+		grille_bouton = new JButton[lignes][colonnes];
 		case_libre=(lignes*colonnes)-nbbombes;
 		drapeaux=0;
 		win=false;
@@ -60,7 +71,7 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		gray = new Color(230, 230, 230);
 		white = new Color(255, 255, 255);
 		red = new Color(255, 0, 0);
-		this.Update();
+		this.Afficher();
 		this.Menu();
 		first=true;
 	}
@@ -77,29 +88,60 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		}
 	}
 
-public int getBomb(int l, int c)
-{
-	return grille_bombe[l][c];
-}
+	public int getLignes()
+	{
+		return lignes;
+	}
 
-public int getLignes()
-{
-	return lignes;
-}
+	public int getColonnes()
+	{
+		return colonnes;
+	}
 
-public int getColonnes()
-{
-	return colonnes;
-}
+	public int getBomb(int l, int c)
+	{
+		return grille_bombe[l][c];
+	}
 
-public int getPartie(int l, int c)
-{
-	return grille_partie[l][c];
-}
-	
-/*
-place les bombes dans la grille_bombe
-*/
+	public int getPartie(int l, int c)
+	{
+		return grille_partie[l][c];
+	}
+
+	public void setLignes(int l)
+	{
+		lignes=l;
+	}
+
+	public void setColonnes(int c)
+	{
+		colonnes=c;
+	}
+
+	public void setTables()
+	{
+		grille_bombe = new int[lignes][colonnes];
+		grille_partie = new int[lignes][colonnes];
+	}
+
+	public void setPartie(int l, int c)
+	{
+		grille_partie[l][c]=1;
+	}
+
+	public void setPartie(int l, int c,int val)
+	{
+		grille_partie[l][c]=val;
+	}
+
+	public void setBombs(int l, int c,int val)
+	{
+		grille_bombe[l][c]=val;
+	}
+		
+	/*
+	place les bombes dans la grille_bombe
+	*/
 	private void Place_Bomb(){
 		double y;
 		int l,c;
@@ -139,7 +181,7 @@ place les bombes dans la grille_bombe
 	}
 
 
-	void Afficher_consol(){
+	private void Afficher_consol(){
 		System.out.println("nbcolonnes : "+colonnes);
 		System.out.println("nblignes : "+lignes);
 		System.out.println("case libre : "+case_libre);
@@ -147,32 +189,20 @@ place les bombes dans la grille_bombe
 		System.out.println("");
 		for (int i=0; i<lignes;i++) {
 			for (int k=0;k<colonnes ;k++ ) {
+				System.out.print(grille_bombe[i][k]+" ");
+			}
+			System.out.println("");
+		}
+		System.out.println("\n");
+		for (int i=0; i<lignes;i++) {
+			for (int k=0;k<colonnes ;k++ ) {
 				System.out.print(grille_partie[i][k]+" ");
 			}
 			System.out.println("");
 		}
 	}
-/*
-	void Afficher(){
-		this.Afficher_consol();
-		GridLayout gestionnaire = new GridLayout(lignes, colonnes);
-		fenetre.setLayout(gestionnaire);
-		Color gray = new Color(230, 230, 230);
-		for(int i = 0; i < lignes; i++)
-		{
-			for (int k = 0 ;k < colonnes ;k++ ) 
-			{
-				grille_bouton[i][k] = new JButton("");
-				grille_bouton[i][k].setName(""+(i*10)+k);
-				grille_bouton[i][k].setBackground(gray);
-				grille_bouton[i][k].addMouseListener(this);
-				fenetre.add(grille_bouton[i][k]);				
-			}
-		}
-		fenetre.setVisible(true);
-	}
-*/
-	void Update(){
+
+	public void Afficher(){
 		GridLayout gestionnaire = new GridLayout(lignes, colonnes);
 		fenetre.setLayout(gestionnaire);
 		
@@ -239,13 +269,8 @@ place les bombes dans la grille_bombe
 		
 		fenetre.setVisible(true);
 	}
-			
-	void ChangeVal(int l, int c)
-	{
-		grille_partie[l][c]=1;
-	}
 
-	void Cont(int l, int c)
+	public void Cont(int l, int c)
 	{
 		if (grille_bombe[l][c]==9) {
 			loose = true;
@@ -262,7 +287,7 @@ place les bombes dans la grille_bombe
 		
 	}
 
-	void Perdu()
+	private void Perdu()
 	{
 		for (int i=0; i<lignes; i++) {
 			for (int k=0; k<colonnes; k++) {
@@ -293,7 +318,7 @@ place les bombes dans la grille_bombe
 		menu.setVisible(true);
 	}
 
-	void Gagné()
+	private void Gagné()
 	{
 		GridLayout gestionnaire = new GridLayout(3, 1);
 		menu.setLayout(gestionnaire);
@@ -320,7 +345,7 @@ place les bombes dans la grille_bombe
 		menu.setVisible(true);
 	}
 
-	void Drapeau(int l, int c)
+	private void Drapeau(int l, int c)
 	{
 		if (grille_partie[l][c]==0) {
 			grille_partie[l][c]=2;
@@ -335,7 +360,7 @@ place les bombes dans la grille_bombe
 		this.Menu();
 	}
 
-	void Menu()
+	private void Menu()
 	{
 		GridLayout gestionnaire = new GridLayout(2, 1);
 		menu.setLayout(gestionnaire);
@@ -365,11 +390,14 @@ place les bombes dans la grille_bombe
 		String chaine = e.getActionCommand();
 		if(chaine=="Sauvegarder et quitté")
 		{
-			System.out.println("Sauvegarder");
+			new Save(lignes, colonnes, this);
+			System.exit(0);
 
 		}else if(chaine=="Nouvelle partie")
 		{
 			System.out.println("Nouvelle partie");
+
+			new Partie(lignes,colonnes,nbbombes);
 
 		}else if(chaine=="Quitté")
 		{
@@ -412,11 +440,10 @@ place les bombes dans la grille_bombe
 					{
 						this.Drapeau(i,k);
 					}
-					this.Update();					
+					this.Afficher();					
 				}
 			}
 		}
 
-		
 	}		// un bouton est relaché
 }	

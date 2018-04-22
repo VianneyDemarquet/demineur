@@ -3,7 +3,7 @@
 public class Changement{
 	public void Changements(int l, int c, Partie grille)
 	{
-		grille.ChangeVal(l,c);
+		grille.setPartie(l,c);
 		grille.Cont(l,c);
 		if (grille.getBomb(l,c) == 0) 
 		{
