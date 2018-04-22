@@ -38,6 +38,8 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		lignes=l;
 		colonnes=c;
 		nbbombes=b;
+		case_libre=(lignes*colonnes)-nbbombes;
+		drapeaux=0;
 		this.Zéro();
 		this.Place_Bomb();
 		this.Init();
@@ -63,8 +65,6 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		grille_bouton = new JButton[lignes][colonnes];
-		case_libre=(lignes*colonnes)-nbbombes;
-		drapeaux=0;
 		win=false;
 		loose=false;
 		first=false;
@@ -98,6 +98,11 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		return colonnes;
 	}
 
+	public int getNbbombes()
+	{
+		return nbbombes;
+	}
+
 	public int getBomb(int l, int c)
 	{
 		return grille_bombe[l][c];
@@ -106,6 +111,16 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	public int getPartie(int l, int c)
 	{
 		return grille_partie[l][c];
+	}
+
+	public int getCase_libre()
+	{
+		return case_libre;
+	}
+
+	public int getDrapeaux()
+	{
+		return drapeaux;
 	}
 
 	public void setLignes(int l)
@@ -138,6 +153,22 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	{
 		grille_bombe[l][c]=val;
 	}
+
+	public void setCase_libre(int val)
+	{
+		case_libre=val;
+	}
+
+	public void setNbbombes(int val)
+	{
+		nbbombes=val;
+	}
+
+	public void setDrapeaux(int val)
+	{
+		drapeaux=val;
+	}
+
 		
 	/*
 	place les bombes dans la grille_bombe
@@ -397,7 +428,11 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		{
 			System.out.println("Nouvelle partie");
 
+			fenetre.dispose();
+			menu.dispose();
+
 			new Partie(lignes,colonnes,nbbombes);
+			//System.exit(0);
 
 		}else if(chaine=="Quitté")
 		{

@@ -12,6 +12,9 @@ class Save {
 			{
 				flux.writeInt(l);
 				flux.writeInt(c);
+				flux.writeInt(grille.getCase_libre());
+				flux.writeInt(grille.getNbbombes());
+				flux.writeInt(grille.getDrapeaux());
 
 				System.out.println("");
 
@@ -83,6 +86,9 @@ class Save {
 				
 				grille.setLignes(flux.readInt());
 				grille.setColonnes(flux.readInt());
+				grille.setCase_libre(flux.readInt());
+				grille.setNbbombes(flux.readInt());
+				grille.setDrapeaux(flux.readInt());
 
 				grille.setTables();
 
