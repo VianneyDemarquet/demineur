@@ -57,12 +57,26 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		fenetre = new JFrame("Démineur");
 		fenetre.setSize(500, 500);
 		fenetre.setLocation(0, 0);
-		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Partie grille=this;
+		
+		fenetre.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e) 
+			{
+				new Save(lignes,colonnes,grille);
+				System.exit(0);
+			}
+		}); 
 
 		menu = new JFrame("Menu");
 		menu.setSize(200,500);
 		menu.setLocation(600,0);
-		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		menu.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e) 
+			{
+				new Save(lignes,colonnes,grille);
+				System.exit(0);
+			}
+		}); 
 
 		grille_bouton = new JButton[lignes][colonnes];
 		win=false;
@@ -273,6 +287,12 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 					if (!win && !loose) {
 						grille_bouton[i][k].addMouseListener(this);
 					}
+				}else if(grille_partie[i][k]==5)
+				{
+					grille_bouton[i][k] = new JButton("");
+					grille_bouton[i][k].setBackground(red);
+					grille_bouton[i][k].setIcon(new ImageIcon("image/étoile.png"));
+
 				}else if (grille_bombe[i][k] == 0) 
 				{
 					grille_bouton[i][k] = new JButton("");
@@ -322,8 +342,10 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	{
 		for (int i=0; i<lignes; i++) {
 			for (int k=0; k<colonnes; k++) {
-				if (grille_partie[i][k]!=4 && grille_bombe[i][k]==9) {
+				if (grille_partie[i][k]!=4 && grille_bombe[i][k]==9 && grille_partie[i][k]!=2) {
 					grille_partie[i][k]=1;
+				}else if (grille_partie[i][k]==2 && grille_bombe[i][k]!=9) {
+					grille_partie[i][k]=5;
 				}
 			}
 		}
@@ -426,13 +448,11 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 
 		}else if(chaine=="Nouvelle partie")
 		{
-			System.out.println("Nouvelle partie");
 
 			fenetre.dispose();
 			menu.dispose();
 
 			new Partie(lignes,colonnes,nbbombes);
-			//System.exit(0);
 
 		}else if(chaine=="Quitté")
 		{

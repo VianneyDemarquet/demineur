@@ -16,8 +16,6 @@ class Save {
 				flux.writeInt(grille.getNbbombes());
 				flux.writeInt(grille.getDrapeaux());
 
-				System.out.println("");
-
 				//sauvegarde pos bombe
 				for (int i=0; i<l; i++) 
 				{
@@ -42,7 +40,7 @@ class Save {
 				Object[] choix = {"Ok"};
  
 				int reponse = JOptionPane.showOptionDialog(null,
-				"Erreur lors de l'écriture",
+				"Erreur lors de l'écriture\n"+exception.getMessage(),
 				"Erreur",
 				JOptionPane.DEFAULT_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
@@ -62,7 +60,7 @@ class Save {
 			Object[] choix = {"Ok"};
  
 			int reponse = JOptionPane.showOptionDialog(null,
-			"Fichier non trouver",
+			"Fichier non trouver\n"+exception.getMessage(),
 			"Erreur",
 			JOptionPane.DEFAULT_OPTION,
 			JOptionPane.QUESTION_MESSAGE,
@@ -115,7 +113,7 @@ class Save {
 				Object[] choix = {"Ok"};
  
 				int reponse = JOptionPane.showOptionDialog(null,
-				"Erreur lors de la lecture",
+				"Erreur lors de la lecture\n"+exception.getMessage(),
 				"Erreur",
 				JOptionPane.DEFAULT_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
@@ -134,7 +132,7 @@ class Save {
 			Object[] choix = {"Ok"};
  
 			int reponse = JOptionPane.showOptionDialog(null,
-			"Fichier non trouver",
+			"Fichier non trouver\n"+exception.getMessage(),
 			"Erreur",
 			JOptionPane.DEFAULT_OPTION,
 			JOptionPane.QUESTION_MESSAGE,
