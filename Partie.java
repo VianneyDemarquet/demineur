@@ -5,7 +5,12 @@ import java.lang.Object;
 import  java.awt.event.*;
 import java.io.*;
 
-
+/**
+ * La classe <code>Partie</code> est utilis&eacute;e pour comenc&eacute; et g&eacute;r&eacute; une partie en cour.
+ *  
+ * @author Vianney Demarquet
+ * @version 0.1
+ */
 public class Partie extends JFrame implements MouseListener, ActionListener{
 	
 	private int[][] grille_bombe;
@@ -32,6 +37,15 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	private Color white;
 	private Color red;
 
+	/**
+	* Constructeur destin&eacute; &agrave; la cr&eacute;ation de certaine
+	* constantes publiques.
+	*
+	* @param l nombre de lignes souhait&eacute; (entre 4 et 30)
+	* @param c nombre de colonnes souhait&eacute; (entre 4 et 30)
+	* @param b nombre de bombe souhait&eacute;
+	*/
+
 	public Partie(int l, int c, int b) {
 		grille_bombe = new int[l][c];
 		grille_partie = new int[l][c];
@@ -46,12 +60,21 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		
 	}
 
+	/**
+	* Constructeur destin&eacute; &agrave; la cr&eacute;ation de certaine 
+	* constantes publiques à partire d'une sauvegarde.
+	*/
 	public Partie()
 	{
 		new Save(this);
 		this.Init();
 	}
 
+	/**
+	* Cr&eacute;&eacute; les interfaces graphiques et 
+	* certaine constante publique.
+	*
+	*/
 	private void Init()
 	{
 		fenetre = new JFrame("Démineur");
@@ -102,82 +125,172 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		}
 	}
 
+	/**
+	* Renvoie le nombre de lignes.
+	*
+	* @return le nombre de lignes (entre 4 et 30)
+	*/
 	public int getLignes()
 	{
 		return lignes;
 	}
 
+	/**
+	* Renvoie le nombre de colonnes.
+	*
+	* @return le nombre de colonnes (entre 4 et 30)
+	*/
 	public int getColonnes()
 	{
 		return colonnes;
 	}
 
+	/**
+	* Renvoie le nombre de bombes.
+	*
+	* @return le nombre de bombes
+	*/
 	public int getNbbombes()
 	{
 		return nbbombes;
 	}
 
+	/**
+	* Renvoie le nombre de bombes autour de cette case
+	*
+	* @return le nombre de bombes
+	* @param l le num&eacute;ro ligne de la case
+	* @param c le num&eacute;ro colonnes de la case
+	*/
 	public int getBomb(int l, int c)
 	{
 		return grille_bombe[l][c];
 	}
 
+	/**
+	* Renvoie renvoie si la case et cach&eacute;, r&eacute;v&eacute;l&eacute;
+	* ou avec un marqueur.
+	*
+	* @return &eacute;tat de la case
+	* @param l le num&eacute;ro ligne de la case
+	* @param c le num&eacute;ro colonnes de la case
+	*/
 	public int getPartie(int l, int c)
 	{
 		return grille_partie[l][c];
 	}
 
+	/**
+	* Renvoie le nombre de case libre.
+	*
+	* @return le nombre de case libre
+	*/
 	public int getCase_libre()
 	{
 		return case_libre;
 	}
 
+	/**
+	* Renvoie le nombre de drapeaux.
+	*
+	* @return le nombre de drapeaux
+	*/
 	public int getDrapeaux()
 	{
 		return drapeaux;
 	}
 
+	/**
+	* Initilise le nombre de lignes.
+	*
+	* @param l le nombre de lignes
+	*/
 	public void setLignes(int l)
 	{
 		lignes=l;
 	}
 
+	/**
+	* Initilise le nombre de colonnes.
+	*
+	* @param c le nombre de colonnes
+	*/
 	public void setColonnes(int c)
 	{
 		colonnes=c;
 	}
 
+	/**
+	* Initilise la taille des tableaux.
+	*
+	*/
 	public void setTables()
 	{
 		grille_bombe = new int[lignes][colonnes];
 		grille_partie = new int[lignes][colonnes];
 	}
 
+	/**
+	* Change la valeur de la case de cach&eacute; &agrave; r&eacute;v&eacute;l&eacute;.
+	*
+	* @param l le num&eacute;ro de lignes
+	* @param c le num&eacute;ro de colonnes
+	*/
 	public void setPartie(int l, int c)
 	{
 		grille_partie[l][c]=1;
 	}
 
+	/**
+	* Change la valeur de la case de cach&eacute;, r&eacute;v&eacute;l&eacute;
+	* ou avec un marqueur.
+	*
+	* @param l le num&eacute;ro de lignes
+	* @param c le num&eacute;ro de colonnes
+	* @param val &eacute;tat de la case
+	*/
 	public void setPartie(int l, int c,int val)
 	{
 		grille_partie[l][c]=val;
 	}
 
+	/**
+	* Change le nombre de bombe des case alentour.
+	*
+	* @param l le num&eacute;ro de lignes
+	* @param c le num&eacute;ro de colonnes
+	* @param val le nombre de bombe souhait&eacute;
+	*/
 	public void setBombs(int l, int c,int val)
 	{
 		grille_bombe[l][c]=val;
 	}
 
+	/**
+	* Change le nombre de case libre
+	*
+	* @param val le nombre de case libre
+	*/
 	public void setCase_libre(int val)
 	{
 		case_libre=val;
 	}
 
+	/**
+	* change le nombre de bombes
+	*
+	* @param val le nombre de bombes
+	*/
 	public void setNbbombes(int val)
 	{
 		nbbombes=val;
 	}
 
+	/**
+	* Change le nombre de drapeaux
+	*
+	* @param val le nombre de drapeaux
+	*/
 	public void setDrapeaux(int val)
 	{
 		drapeaux=val;
@@ -246,7 +359,10 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 			System.out.println("");
 		}
 	}
-
+	/**
+	* Affiche la partie en cour
+	*
+	*/
 	public void Afficher(){
 		GridLayout gestionnaire = new GridLayout(lignes, colonnes);
 		fenetre.setLayout(gestionnaire);
@@ -321,6 +437,12 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		fenetre.setVisible(true);
 	}
 
+	/**
+	* V&eacute;rifie si on &agrave; gagn&eacute; ou perdu.
+	*
+	* @param l le num&eacute;ro de lignes
+	* @param c le num&eacute;ro de colonnes
+	*/
 	public void Cont(int l, int c)
 	{
 		if (grille_bombe[l][c]==9) {
@@ -337,6 +459,7 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		}
 		
 	}
+
 
 	private void Perdu()
 	{
@@ -438,6 +561,11 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		menu.setVisible(true);
 	}
 
+	/**
+	* Efectue ce qui est ce qui est marqu&eacute; sur le bouton cliqué dans le menu.
+	*
+	* @param e case sur la quelle on a cliqu&eacute;
+	*/
 	public void actionPerformed(ActionEvent e)
 	{
 		String chaine = e.getActionCommand();
@@ -461,18 +589,41 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		
 	}
 
+	/**
+	*Ne fais rien.
+	*
+	*/
 	public void mouseClicked(MouseEvent e){
 	}			// un bouton cliqué
 
+	/**
+	*Ne fais rien.
+	*
+	*/
 	public void mouseEntered(MouseEvent e){
 	}			// debut du survol
 
+	/**
+	*Ne fais rien.
+	*
+	*/
 	public void mouseExited(MouseEvent e){
 	}			// fin du survol
 
+	/**
+	*Ne fais rien.
+	*
+	*/
 	public void mousePressed(MouseEvent e){
 	}			// un bouton appuyé
 
+	/**
+	* Passe la case de cach&eacute; &agrave; r&eacute;v&eacute;l&eacute;
+	* si on relache le clic gauche ou ajoute, change, retire le marqueur 
+	* si on relache le clic droit.
+	*
+	* @param e case sur la quelle on a cliqu&eacute;
+	*/
 	public void mouseReleased(MouseEvent e)
 	{
 		int x=Integer.parseInt(e.getComponent().getName());

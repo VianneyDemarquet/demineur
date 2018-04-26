@@ -2,7 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 
-class Save {
+/**
+ * La classe <code>Save</code> est utilis&eacute;e pour effectu&eacute;
+ * sauvegarde et le chargement d'une partie.
+ *  
+ * @author Vianney Demarquet
+ * @version 0.1
+ */
+public class Save {
+	/**
+	* Constructeur sauvegarde la partie en cour.
+	*
+	* @param l le nombre de lignes de la partie
+	* @param c le nombre de colonnes de la partie
+	* @param grille la grille de jeux
+	*
+	* @throws FileNotFoundException si fichier non trouver
+	* @throws IOException si probl&eacute;me lors de la lecture
+	*/
 	public Save(int l, int c,Partie grille)
 	{
 		try
@@ -74,6 +91,14 @@ class Save {
 		}
 	}
 
+	/**
+	* Constructeur charge la partie sauvegarder ulterieurement.
+	*
+	* @param grille la grille de jeux
+	*
+	* @throws FileNotFoundException si fichier non trouver
+	* @throws IOException si probl&eacute;me lors de l'&eacute;criture;
+	*/
 	public Save(Partie grille)
 	{
 		try
