@@ -88,7 +88,10 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		fenetre.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e) 
 			{
-				new Save(lignes,colonnes,grille);
+				if (!win && !loose) 
+				{
+					new Save(lignes,colonnes,grille);
+				}
 				System.exit(0);
 			}
 		}); 
@@ -99,7 +102,10 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		menu.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e) 
 			{
-				new Save(lignes,colonnes,grille);
+				if (!win && !loose) 
+				{
+					new Save(lignes,colonnes,grille);
+				}
 				System.exit(0);
 			}
 		}); 
