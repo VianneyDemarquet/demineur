@@ -37,6 +37,8 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	private Color white;
 	private Color red;
 
+	private Partie grille;
+
 	/**
 	* Constructeur destin&eacute; &agrave; la cr&eacute;ation de certaine
 	* constantes publiques.
@@ -77,10 +79,11 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	*/
 	private void Init()
 	{
+		grille=this;
 		fenetre = new JFrame("Démineur");
 		fenetre.setSize(500, 500);
 		fenetre.setLocation(0, 0);
-		Partie grille=this;
+		
 		
 		fenetre.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e) 
@@ -638,9 +641,13 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 				if(x==var1 || x==var2)
 				{
 					if(e.getButton() == MouseEvent.BUTTON1)	//Clic Gauche
-					{								
-						Changement s = new Changement();
-						s.Changements(i,k,this);
+					{	
+						if (grille_partie[i][k]==0) 
+						{
+							Changement s = new Changement();
+							s.Changements(i,k,this);				
+						}							
+						
 					}
 					else	//Clic droit
 					{
