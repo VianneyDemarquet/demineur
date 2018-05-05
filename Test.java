@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class main{
+public class Test{
 	public static void main(String[] args) {
 
 		if (args.length<3) 

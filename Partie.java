@@ -11,7 +11,7 @@ import java.io.*;
  * @author Vianney Demarquet
  * @version 0.1
  */
-public class Partie extends JFrame implements MouseListener, ActionListener{
+public class Partie {
 	
 	private int[][] grille_bombe;
 	private int[][] grille_partie;
@@ -21,23 +21,7 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	private int case_libre;
 	private int drapeaux;
 
-	private JButton[][] grille_bouton;
-	private JButton panel;
-	private JButton sauvegarder;
-	private JButton quitté;
-
-	private boolean first;
-	private boolean win;
-	private boolean loose;
-	
-	private JFrame fenetre;
-	private JFrame menu;
-	
-	private Color gray;
-	private Color white;
-	private Color red;
-
-	private Partie grille;
+	private Affichage affiche;
 
 	/**
 	* Constructeur destin&eacute; &agrave; la cr&eacute;ation de certaine
@@ -58,7 +42,7 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		drapeaux=0;
 		this.Zéro();
 		this.Place_Bomb();
-		this.Init();
+		affiche = new Affichage(this);
 		
 	}
 
@@ -68,58 +52,8 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	*/
 	public Partie()
 	{
-		new Save(this);
-		this.Init();
-	}
-
-	/**
-	* Cr&eacute;&eacute; les interfaces graphiques et 
-	* certaine constante publique.
-	*
-	*/
-	private void Init()
-	{
-		grille=this;
-		fenetre = new JFrame("Démineur");
-		fenetre.setSize(500, 500);
-		fenetre.setLocation(0, 0);
-		
-		
-		fenetre.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e) 
-			{
-				if (!win && !loose) 
-				{
-					new Save(lignes,colonnes,grille);
-				}
-				System.exit(0);
-			}
-		}); 
-
-		menu = new JFrame("Menu");
-		menu.setSize(200,500);
-		menu.setLocation(600,0);
-		menu.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e) 
-			{
-				if (!win && !loose) 
-				{
-					new Save(lignes,colonnes,grille);
-				}
-				System.exit(0);
-			}
-		}); 
-
-		grille_bouton = new JButton[lignes][colonnes];
-		win=false;
-		loose=false;
-		first=false;
-		gray = new Color(230, 230, 230);
-		white = new Color(255, 255, 255);
-		red = new Color(255, 0, 0);
-		this.Afficher();
-		this.Menu();
-		first=true;
+		new Load(this);
+		affiche = new Affichage(this);
 	}
 
 	/*
@@ -368,83 +302,7 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 			System.out.println("");
 		}
 	}
-	/**
-	* Affiche la partie en cour
-	*
-	*/
-	public void Afficher(){
-		GridLayout gestionnaire = new GridLayout(lignes, colonnes);
-		fenetre.setLayout(gestionnaire);
-		
-		for(int i = 0; i < (lignes); i++)
-		{
-			for (int k = 0 ;k < colonnes ;k++ ) 
-			{
-				if (first==true) {
-					fenetre.remove(grille_bouton[i][k]);
-				}
-				if (grille_partie[i][k] == 0) 
-				{
-					grille_bouton[i][k] = new JButton("");
-					grille_bouton[i][k].setName(""+(i*10)+k);
-					grille_bouton[i][k].setBackground(gray);
-					if (!win && !loose) {
-						grille_bouton[i][k].addMouseListener(this);
-					}
-					
-				}else if(grille_partie[i][k]==2)
-				{
-					grille_bouton[i][k] = new JButton("");
-					grille_bouton[i][k].setName(""+(i*10)+k);
-					grille_bouton[i][k].setBackground(gray);
-					grille_bouton[i][k].setIcon(new ImageIcon("image/étoile.png"));
-
-					if (!win && !loose) {
-						grille_bouton[i][k].addMouseListener(this);
-					}
-				}else if(grille_partie[i][k]==3)
-				{
-					grille_bouton[i][k] = new JButton("");
-					grille_bouton[i][k].setName(""+(i*10)+k);
-					grille_bouton[i][k].setBackground(gray);
-					grille_bouton[i][k].setIcon(new ImageIcon("image/intero.png"));
-
-					if (!win && !loose) {
-						grille_bouton[i][k].addMouseListener(this);
-					}
-				}else if(grille_partie[i][k]==5)
-				{
-					grille_bouton[i][k] = new JButton("");
-					grille_bouton[i][k].setBackground(red);
-					grille_bouton[i][k].setIcon(new ImageIcon("image/étoile.png"));
-
-				}else if (grille_bombe[i][k] == 0) 
-				{
-					grille_bouton[i][k] = new JButton("");
-					grille_bouton[i][k].setBackground(white);
-					
-				}else if (grille_bombe[i][k] != 9) 
-				{	
-					grille_bouton[i][k] = new JButton(""+grille_bombe[i][k]);
-					grille_bouton[i][k].setBackground(white);
-
-				}else if(grille_partie[i][k] == 4)
-				{
-					grille_bouton[i][k] = new JButton("");
-					grille_bouton[i][k].setBackground(red);
-					grille_bouton[i][k].setIcon(new ImageIcon("image/bomb.png"));
-				}else
-				{
-					grille_bouton[i][k] = new JButton("");
-					grille_bouton[i][k].setBackground(white);
-					grille_bouton[i][k].setIcon(new ImageIcon("image/bomb.png"));
-				}
-				fenetre.add(grille_bouton[i][k]);
-			}
-		}
-		
-		fenetre.setVisible(true);
-	}
+	
 
 	/**
 	* V&eacute;rifie si on &agrave; gagn&eacute; ou perdu.
@@ -454,16 +312,19 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 	*/
 	public void Cont(int l, int c)
 	{
-		if (grille_bombe[l][c]==9) {
-			loose = true;
+		if (grille_bombe[l][c]==9) 
+		{
 			grille_partie[l][c]=4;
 			this.Perdu();
+			affiche.setFin();
+			affiche.MenuFin(true);
 		}else
 		{
 			case_libre--;
-			if (case_libre == 0) {
-				win = true;
-				this.Gagné();
+			if (case_libre == 0) 
+			{
+				affiche.setFin();
+				affiche.MenuFin(false);
 			}
 		}
 		
@@ -481,56 +342,9 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 				}
 			}
 		}
-		GridLayout gestionnaire = new GridLayout(3, 1);
-		menu.setLayout(gestionnaire);
-		menu.remove(panel);
-		menu.remove(sauvegarder);
-
-		panel = new JButton("Perdu");
-		sauvegarder = new JButton("Nouvelle partie");
-		quitté = new JButton("Quitté");
-
-		panel.setBackground(red);
-		quitté.setBackground(gray);
-		sauvegarder.setBackground(gray);
-
-		quitté.addActionListener(this);
-		sauvegarder.addActionListener(this);
-
-		menu.add(panel);
-		menu.add(sauvegarder);
-		menu.add(quitté);
-		menu.setVisible(true);
 	}
 
-	private void Gagné()
-	{
-		GridLayout gestionnaire = new GridLayout(3, 1);
-		menu.setLayout(gestionnaire);
-
-		menu.remove(panel);
-		menu.remove(sauvegarder);
-
-		panel = new JButton("Gagné");
-		sauvegarder = new JButton("Nouvelle partie");
-		quitté = new JButton("Quitté");
-
-		Color vert = new Color(0,200,0);
-		panel.setBackground(vert);
-		quitté.setBackground(gray);
-		sauvegarder.setBackground(gray);
-
-		quitté.addActionListener(this);
-		sauvegarder.addActionListener(this);
-
-		menu.add(panel);
-		menu.add(sauvegarder);
-		menu.add(quitté);
-
-		menu.setVisible(true);
-	}
-
-	private void Drapeau(int l, int c)
+	public void Drapeau(int l, int c)
 	{
 		if (grille_partie[l][c]==0) {
 			grille_partie[l][c]=2;
@@ -542,127 +356,10 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		{
 			grille_partie[l][c]=0;
 		}
-		this.Menu();
+		affiche.Menu(nbbombes-drapeaux);
 	}
 
-	private void Menu()
-	{
-		GridLayout gestionnaire = new GridLayout(2, 1);
-		menu.setLayout(gestionnaire);
-		if (first == true) 
-		{
-			menu.remove(panel);
-			menu.remove(sauvegarder);
-		}
-		int mine_rest = nbbombes-drapeaux;
 
-		panel = new JButton("Mine \n restante : "+mine_rest);
-		sauvegarder = new JButton("Sauvegarder et quitté");
+}
 
-		panel.setBackground(gray);
-		sauvegarder.setBackground(gray);
-
-		sauvegarder.addActionListener(this);
-
-		menu.add(panel);
-		menu.add(sauvegarder);
-
-		menu.setVisible(true);
-	}
-
-	/**
-	* Efectue ce qui est ce qui est marqu&eacute; sur le bouton cliqué dans le menu.
-	*
-	* @param e case sur la quelle on a cliqu&eacute;
-	*/
-	public void actionPerformed(ActionEvent e)
-	{
-		String chaine = e.getActionCommand();
-		if(chaine=="Sauvegarder et quitté")
-		{
-			new Save(lignes, colonnes, this);
-			System.exit(0);
-
-		}else if(chaine=="Nouvelle partie")
-		{
-
-			fenetre.dispose();
-			menu.dispose();
-
-			new Partie(lignes,colonnes,nbbombes);
-
-		}else if(chaine=="Quitté")
-		{
-			System.exit(0);
-		}
-		
-	}
-
-	/**
-	*Ne fais rien.
-	*
-	*/
-	public void mouseClicked(MouseEvent e){
-	}			// un bouton cliqué
-
-	/**
-	*Ne fais rien.
-	*
-	*/
-	public void mouseEntered(MouseEvent e){
-	}			// debut du survol
-
-	/**
-	*Ne fais rien.
-	*
-	*/
-	public void mouseExited(MouseEvent e){
-	}			// fin du survol
-
-	/**
-	*Ne fais rien.
-	*
-	*/
-	public void mousePressed(MouseEvent e){
-	}			// un bouton appuyé
-
-	/**
-	* Passe la case de cach&eacute; &agrave; r&eacute;v&eacute;l&eacute;
-	* si on relache le clic gauche ou ajoute, change, retire le marqueur 
-	* si on relache le clic droit.
-	*
-	* @param e case sur la quelle on a cliqu&eacute;
-	*/
-	public void mouseReleased(MouseEvent e)
-	{
-		int x=Integer.parseInt(e.getComponent().getName());
-
-		for (int i=0; i<lignes; i++) 
-		{
-			for (int k=0; k<colonnes; k++) 
-			{
-				int var1 = i*100+k;
-				int var2 = i*1000+k;
-				
-				if(x==var1 || x==var2)
-				{
-					if(e.getButton() == MouseEvent.BUTTON1)	//Clic Gauche
-					{	
-						if (grille_partie[i][k]==0) 
-						{
-							Changement s = new Changement();
-							s.Changements(i,k,this);				
-						}							
-						
-					}
-					else	//Clic droit
-					{
-						this.Drapeau(i,k);
-					}
-					this.Afficher();					
-				}
-			}
-		}
-
-	}		// un bouton est relaché
-}	
+	
