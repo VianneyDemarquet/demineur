@@ -268,10 +268,6 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
     }
     rename();
   }
-  public static void main(String[] args)
-  {
-    new MenuTest();
-  }
 
 }
 
