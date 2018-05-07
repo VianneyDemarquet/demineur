@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class Test{
 	public static void main(String[] args) {
@@ -18,5 +17,7 @@ public class Test{
 			Partie grille = new Partie(lignes,colonnes,nbbombes);
 		}
 		
-}
+		while(true)
+		{}
+	}
 }

@@ -52,63 +52,8 @@ public class Partie {
 	*/
 	public Partie()
 	{
-<<<<<<< HEAD
-		new Save(this);
-		this.Init();
-	}
-
-	/**
-	* Cr&eacute;&eacute; les interfaces graphiques et 
-	* certaine constante publique.
-	*
-	*/
-	private void Init()
-	{
-		grille=this;
-		fenetre = new JFrame("Démineur");
-		fenetre.setSize(500, 500);
-		fenetre.setLocation(0, 0);
-		//Afficher_consol();
-		
-		fenetre.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e) 
-			{
-				if (!win && !loose) 
-				{
-					new Save(lignes,colonnes,grille);
-				}
-				System.exit(0);
-			}
-		}); 
-
-		menu = new JFrame("Menu");
-		menu.setSize(200,500);
-		menu.setLocation(600,0);
-		menu.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e) 
-			{
-				if (!win && !loose) 
-				{
-					new Save(lignes,colonnes,grille);
-				}
-				System.exit(0);
-			}
-		}); 
-
-		grille_bouton = new JButton[lignes][colonnes];
-		win=false;
-		loose=false;
-		first=false;
-		gray = new Color(230, 230, 230);
-		white = new Color(255, 255, 255);
-		red = new Color(255, 0, 0);
-		this.Afficher();
-		this.Menu();
-		first=true;
-=======
 		new Load(this);
 		affiche = new Affichage(this);
->>>>>>> c5565e15800dede26549ec0dfdf0e8d84f092a11
 	}
 
 	/*

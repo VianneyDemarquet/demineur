@@ -11,7 +11,7 @@ import java.io.*;
  */
 public class Save {
 	/**
-	* Constructeur sauvegarde la partie en cours.
+	* Constructeur sauvegarde la partie en cour.
 	*
 	* @param l le nombre de lignes de la partie
 	* @param c le nombre de colonnes de la partie
