@@ -1,12 +1,15 @@
 import  javax.swing.*;
 import  java.awt.*;
 import  java.awt.event.*;
+import java.io.*;
+
+
 public class MenuTest extends JFrame implements ActionListener, MouseListener{
   private JFrame fenetre;
   private JFrame choix;
   private int nb_ligne = 4;
   private int nb_colonne = 4;
-  private int nb_bombe= 10;
+  private int nb_bombe= 1;
   private JLabel ligne;
   private JLabel colonne;
   private JLabel bombe; 
@@ -17,13 +20,20 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
     fenetre = new JFrame();
     GridLayout gestionnaire = new GridLayout(0,1);
     gestionnaire.setHgap(35); 
-    gestionnaire.setVgap(35);             
+    gestionnaire.setVgap(35);   
+    boolean var=Continuer();
     fenetre.setLayout(gestionnaire);
     JButton b1 = new JButton("Nouvelle partie");
     JButton b2 = new JButton("Continuer la partie");
     JButton b3 = new JButton("Quitter");
     b1.addActionListener(this);
-    b2.addActionListener(this);
+    if (var == false){
+      b2.setBackground(new Color(230, 230, 230));
+    }else
+    {
+      b2.addActionListener(this);
+    }
+
     b3.addActionListener(this);
     fenetre.add(b1);
     fenetre.add(b2);
@@ -32,6 +42,25 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
     fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     fenetre.setVisible(true);
   }
+
+  private boolean Continuer()
+  {
+    try
+    {
+      DataInputStream flux = new DataInputStream(new FileInputStream(new File("foo.bin")));
+      try{
+        flux.close();
+      }catch(IOException exception)
+      {
+        return false;
+      }
+    }catch(FileNotFoundException exception)
+    {
+      return false;
+    }
+    return true;
+  }
+
   public void nouvellePartie(){
     choix = new JFrame();
     GridLayout gestionnaire = new GridLayout(4,5);
@@ -161,7 +190,8 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
     }
     else if(e.getActionCommand()=="Continuer la partie")
     {
-
+      fenetre.dispose();
+      new Partie();
     }
     else if(e.getActionCommand()=="Quitter")
     {
