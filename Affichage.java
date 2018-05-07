@@ -251,7 +251,7 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 			fenetre.dispose();
 			menu.dispose();
 
-			new Partie(grille.getLignes(), grille.getColonnes(),grille.getNbbombes());
+			new MenuTest();
 
 		}else if(chaine=="Quitté")
 		{
