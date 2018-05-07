@@ -83,7 +83,7 @@ public class Partie extends JFrame implements MouseListener, ActionListener{
 		fenetre = new JFrame("Démineur");
 		fenetre.setSize(500, 500);
 		fenetre.setLocation(0, 0);
-		
+		//Afficher_consol();
 		
 		fenetre.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e) 
