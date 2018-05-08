@@ -3,7 +3,12 @@ import  java.awt.*;
 import  java.awt.event.*;
 import java.io.*;
 
-
+/**
+ * La classe <code>MenuTest</code> est utilis&eacute;e pour int&eacute;ragir avec l'utilisateur avec l'aide d'un menu; et ainsi g&eacute;r&eacute; les param&egrave;tres d'une nouvelle partie.
+ * Ou de continuer une partie sauvegarder au pr&eacute;alable
+ * @author Elric Launay
+ * @version 0.1
+ */
 public class MenuTest extends JFrame implements ActionListener, MouseListener{
   private JFrame fenetre;
   private JFrame choix;
@@ -14,6 +19,10 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
   private JLabel colonne;
   private JLabel bombe; 
 
+   	/**
+	* Affiche un menu contenant 3 boutons
+	* un bouton Nouvelle partie , Continuer la partie et Quitter 
+	*/
   public MenuTest()
   {
     super("MenuTest");
@@ -43,6 +52,12 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
     fenetre.setVisible(true);
   }
 
+  	/**
+	* Affiche un menu contenant 13 boutons
+	* 3 boutons +, 3 boutons -,3 bouton max et 3 bouton min 
+	* Choix de la valeurs des 3 variables n&eacute;cessaires a la g&eacute;n&eacute;ration du d&eacute;mineur.
+	*
+	*/
   private boolean Continuer()
   {
     try
@@ -162,6 +177,12 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
     choix.setVisible(true);
     choix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
+
+  	/**
+	* Permet de tester si les valeurs des variables sont comprises dans les intervalles demand&eacute;s.
+	* Affiche la valeur choisit par l'utilisateur sur la frame de choix avant validation.
+	* 
+	*/
   private void rename(){
     if(nb_ligne>30){
       nb_ligne=30;
@@ -181,6 +202,11 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
     colonne.setText(nb_colonne+" colonne");
   }
 
+	/**
+	* Efectue l'action sp&eacute;cifiqe au bouton cliqu&eacute; dans le menu.
+	*
+	* @param e case sur la quelle on a cliqu&eacute;
+	*/
   public void actionPerformed(ActionEvent e)
   {
     if(e.getActionCommand()=="Nouvelle partie")
@@ -229,11 +255,11 @@ public class MenuTest extends JFrame implements ActionListener, MouseListener{
   }     // un bouton appuyé
 
   /**
-  * Passe la case de cach&eacute; &agrave; r&eacute;v&eacute;l&eacute;
-  * si on relache le clic gauche ou ajoute, change, retire le marqueur 
-  * si on relache le clic droit.
+  * Modifie les valeurs de nb_ligne nb_colonne et nb_bombe
+  * si on cliquegauche sur l'un des boutons nomm&eacute;s
+  *	on incr&eacute;mente ou d&eacute;cremente les valeurs des variables 
   *
-  * @param e case sur la quelle on a cliqu&eacute;
+  * @param e bouton sur lequel on a cliqu&eacute;
   */
   public void mouseReleased(MouseEvent e)
   {
