@@ -163,7 +163,7 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 
 	/**
 	* Affiche un menu contenant le nombre de mines restante et
-	* un bouton sauvegard&eacute; et quit&eacute;
+	* un bouton sauvegarder; et quiter;
 	*
 	* @param mine_rest corespond au nombre de mines moins le nombre d'&eacute;toile
 	*/
@@ -178,7 +178,7 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 		}
 		
 		panel = new JButton("Mine \n restante : "+mine_rest);
-		sauvegarder = new JButton("Sauvegarder et quitté");
+		sauvegarder = new JButton("Sauvegarder et quitter");
 
 		panel.setBackground(gray);
 		sauvegarder.setBackground(gray);
