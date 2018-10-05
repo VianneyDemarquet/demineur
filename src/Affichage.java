@@ -10,7 +10,7 @@ import  java.awt.event.*;
  * @author Vianney Demarquet
  * @version 0.1
  */
-public class Affichage extends JFrame implements MouseListener, ActionListener {
+public class Affichage extends JFrame {
 
 	private JButton[][] grille_bouton;
 	private Partie grille;
@@ -28,6 +28,8 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 	private JButton quitté;
 
 	private boolean fin=false;
+
+	private Controleur control;
 
 	/**
 	* Constructeur destin&eacute; &agrave; la cr&eacute;ation des
@@ -73,6 +75,7 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 			}
 		}); 
 
+		control = new Controleur(grille,fenetre, menu,this);
 		this.Afficher();
 		this.Menu(grille.getNbbombes());
 		first=true;
@@ -104,7 +107,7 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 					grille_bouton[i][k].setName(""+(i*10)+k);
 					grille_bouton[i][k].setBackground(gray);
 					if (!fin) {
-						grille_bouton[i][k].addMouseListener(this);
+						grille_bouton[i][k].addMouseListener(control);
 					}
 					
 				}else if(grille.getPartie(i,k)==2)
@@ -115,7 +118,7 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 					grille_bouton[i][k].setIcon(new ImageIcon("image/étoile.png"));
 
 					if (!fin) {
-						grille_bouton[i][k].addMouseListener(this);
+						grille_bouton[i][k].addMouseListener(control);
 					}
 				}else if(grille.getPartie(i,k)==3)
 				{
@@ -125,7 +128,7 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 					grille_bouton[i][k].setIcon(new ImageIcon("image/intero.png"));
 
 					if (!fin) {
-						grille_bouton[i][k].addMouseListener(this);
+						grille_bouton[i][k].addMouseListener(control);
 					}
 				}else if(grille.getPartie(i,k)==5)
 				{
@@ -183,7 +186,7 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 		panel.setBackground(gray);
 		sauvegarder.setBackground(gray);
 
-		sauvegarder.addActionListener(this);
+		sauvegarder.addActionListener(control);
 
 		menu.add(panel);
 		menu.add(sauvegarder);
@@ -223,108 +226,12 @@ public class Affichage extends JFrame implements MouseListener, ActionListener {
 		quitté.setBackground(gray);
 		sauvegarder.setBackground(gray);
 
-		quitté.addActionListener(this);
-		sauvegarder.addActionListener(this);
+		quitté.addActionListener(control);
+		sauvegarder.addActionListener(control);
 
 		menu.add(panel);
 		menu.add(sauvegarder);
 		menu.add(quitté);
 		menu.setVisible(true);
 	}
-
-	/**
-	* Efectue ce qui est ce qui est marqu&eacute; sur le bouton cliqu&eacute; dans le menu.
-	*
-	* @param e case sur la quelle on a cliqu&eacute;
-	*/
-	public void actionPerformed(ActionEvent e)
-	{
-		String chaine = e.getActionCommand();
-		if(chaine=="Sauvegarder et quitté")
-		{
-			new Save(grille.getLignes(), grille.getColonnes(), grille);
-			System.exit(0);
-
-		}else if(chaine=="Nouvelle partie")
-		{
-
-			fenetre.dispose();
-			menu.dispose();
-
-			new MenuTest();
-
-		}else if(chaine=="Quitté")
-		{
-			System.exit(0);
-		}
-		
-	}
-
-	/**
-	*Ne fais rien.
-	*
-	*/
-	public void mouseClicked(MouseEvent e){
-	}			// un bouton cliqué
-
-	/**
-	*Ne fais rien.
-	*
-	*/
-	public void mouseEntered(MouseEvent e){
-	}			// debut du survol
-
-	/**
-	*Ne fais rien.
-	*
-	*/
-	public void mouseExited(MouseEvent e){
-	}			// fin du survol
-
-	/**
-	*Ne fais rien.
-	*
-	*/
-	public void mousePressed(MouseEvent e){
-	}			// un bouton appuyé
-
-	/**
-	* Passe la case de cach&eacute; &agrave; r&eacute;v&eacute;l&eacute;
-	* si on relache le clic gauche ou ajoute, change, retire le marqueur 
-	* si on relache le clic droit.
-	*
-	* @param e case sur la quelle on a cliqu&eacute;
-	*/
-	public void mouseReleased(MouseEvent e)
-	{
-		int x=Integer.parseInt(e.getComponent().getName());
-
-		for (int i=0; i<grille.getLignes(); i++) 
-		{
-			for (int k=0; k<grille.getColonnes(); k++) 
-			{
-				int var1 = i*100+k;
-				int var2 = i*1000+k;
-				
-				if(x==var1 || x==var2)
-				{
-					if(e.getButton() == MouseEvent.BUTTON1)	//Clic Gauche
-					{	
-						if (grille.getPartie(i,k)==0) 
-						{
-							Changement s = new Changement();
-							s.Changements(i,k,grille);				
-						}							
-						
-					}
-					else	//Clic droit
-					{
-						grille.Drapeau(i,k);
-					}
-					this.Afficher();					
-				}
-			}
-		}
-
-	}		// un bouton est relaché
 }

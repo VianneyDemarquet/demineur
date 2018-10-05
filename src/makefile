@@ -5,6 +5,7 @@ JC = javac
 		$(JC) $(JF) $*.java
 
 Classes = \
+		Controleur.class\
 		Load.class \
 		MenuTest.class \
 		Partie.class \
@@ -14,6 +15,7 @@ Classes = \
 		Test.class
 
 Sources = \
+		Controleur\
 		Load.java \
 		MenuTest.java \
 		Partie.java \
@@ -22,8 +24,11 @@ Sources = \
 		Affichage.java \
 		Test.java
 
-Test.class: Test.java MenuTest.class
+Test.class: Test.java MenuTest.class Affichage.class
 		$(JC) Test.java
+
+Controleur.class: Controleur.java
+		$(JC) Controleur.java
 		
 Load.class: Load.java Save.class Partie.class
 		$(JC) Load.java
@@ -40,7 +45,7 @@ Changement.class: Changement.java Partie.class
 Save.class: Save.java Partie.class
 		$(JC) Save.java
 
-Affichage.class: Affichage.java Partie.class
+Affichage.class: Affichage.java Partie.class Controleur.class
 		$(JC) Affichage.java
 
 
